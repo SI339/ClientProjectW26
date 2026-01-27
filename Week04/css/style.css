@@ -11,6 +11,7 @@
 body {
   font-family: system-ui, sans-serif;
   line-height: 1.4;
+  cursor: url('../images/shoe.png'), auto;
 }
 
 section{
