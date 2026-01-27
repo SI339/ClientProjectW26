@@ -1,0 +1,295 @@
+/* =========================================
+   BASE
+   ========================================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  line-height: 1.4;
+}
+
+section{
+    border: 20px solid lightgrey;
+}
+
+img {
+  width: 100%;
+  display: block;
+}
+
+figure{
+    border: 10px solid blue;
+}
+
+figcaption {
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  opacity: 0.7;
+}
+
+/* =========================================
+   HEADER
+   ========================================= */
+
+header {
+  max-width: 900px;
+  margin: 2rem auto;
+  text-align: center;
+}
+
+header figure {
+  max-width: 400px;
+  margin: 0 auto 1rem;
+}
+
+h1 {
+  font-size: 2.2rem;
+}
+
+/* =========================================
+   MAIN
+   ========================================= */
+
+main {
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* =========================================
+   SEASONS
+   ========================================= */
+
+.season {
+  display: grid;
+  gap: 1rem;
+}
+
+.season h2 {
+  grid-column: 1 / -1;
+  margin-bottom: 0.5rem;
+}
+
+/* =========================================
+   GRID vs FLEX DEMO
+   ========================================= */
+
+/* Grid year */
+.season-2023 {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+/* Flex year */
+.season-2024 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.season-2024 figure {
+  flex: 1 1 220px;
+}
+
+/* Mixed year */
+.season-2025 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* =========================================
+   PRIMARY IMAGES
+   ========================================= */
+
+figure.primary {
+  grid-column: span 2;
+}
+
+.season-2024 figure.primary {
+  flex: 2 1 400px;
+}
+
+/* =========================================
+   VISIBILITY PLAY
+   ========================================= */
+
+.season figure:not(.primary) {
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+
+.season:hover figure:not(.primary) {
+  opacity: 1;
+}
+
+.season-2023 figure:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s;
+}
+
+/* =========================================
+   ANIMATIONS
+   ========================================= */
+
+
+/* =========================================
+   2024: CSS-only "modal" using :target
+   ========================================= */
+
+/* Make the figure content clickable without changing layout */
+.season-2024 figure {
+  position: relative;
+}
+
+.season-2024 .card-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Close button is hidden until the modal is open */
+.season-2024 .modal-close {
+  display: none;
+  position: fixed;
+  top: 1.2rem;
+  right: 1.2rem;
+  font-size: 2.5rem;
+  line-height: 1;
+  text-decoration: none;
+  color: black;
+  z-index: 1002;
+  padding: 0.25rem 0.6rem;
+  background: white;
+  border: 6px solid black;
+}
+
+/* Overlay (covers whole screen) appears when any 2024 figure is targeted */
+.season-2024 figure:target::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: 1000;
+}
+
+/* The targeted figure becomes the modal */
+.season-2024 figure:target {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(1.08);
+  z-index: 1001;
+
+  width: min(85vw, 900px);
+  max-height: 85vh;
+  overflow: auto;
+
+  border: 16px solid black;   /* BIG border */
+  background: white;
+
+  /* Optional: dramatic look */
+  box-shadow: 0 0 0 12px rgba(255,255,255,0.35);
+
+  /* Make the transition obvious */
+  transition: transform 0.25s ease;
+}
+
+/* Make the image feel like it "grew" */
+.season-2024 figure:target img {
+  width: 100%;
+  height: auto;
+}
+
+/* Show close button only when open */
+.season-2024 figure:target .modal-close {
+  display: inline-block;
+}
+
+/* Accessibility: if user tabs to the card link, give visible focus */
+.season-2024 .card-link:focus {
+  outline: 6px dashed black;
+  outline-offset: 6px;
+}
+
+
+
+
+/* =========================================
+   2025: SIMPLE FADE + ROTATE (PRIMARY LAST)
+   ========================================= */
+
+.season-2025 figure {
+  opacity: 0;
+  animation: fadeRotateBase 1.6s ease forwards;
+}
+
+/* Base stagger (non-primary) */
+.season-2025 figure:nth-of-type(1) { animation-delay: 0.0s; }
+.season-2025 figure:nth-of-type(2) { animation-delay: 0.2s; }
+.season-2025 figure:nth-of-type(3) { animation-delay: 0.4s; }
+.season-2025 figure:nth-of-type(4) { animation-delay: 0.6s; }
+.season-2025 figure:nth-of-type(5) { animation-delay: 0.8s; }
+.season-2025 figure:nth-of-type(6) { animation-delay: 1.0s; }
+.season-2025 figure:nth-of-type(7) { animation-delay: 1.2s; }
+.season-2025 figure:nth-of-type(8) { animation-delay: 1.4s; }
+
+/* 3n+1: tilt LEFT */
+.season-2025 figure:nth-of-type(3n+1):not(.primary) {
+  animation-name: fadeRotateLeft;
+}
+
+/* 3n: tilt RIGHT */
+.season-2025 figure:nth-of-type(3n):not(.primary) {
+  animation-name: fadeRotateRight;
+}
+
+/* 2n: slower fade */
+.season-2025 figure:nth-of-type(2n) {
+  animation-duration: 2.4s;
+}
+
+/* -----------------------------------------
+   PRIMARY: no tilt, appear LAST
+   ----------------------------------------- */
+
+.season-2025 figure.primary {
+  animation-name: fadeRotateBase;
+  animation-delay: 2.2s;     /* after all others */
+  animation-duration: 1.8s;  /* slightly more deliberate */
+}
+
+
+@keyframes fadeRotateBase {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeRotateLeft {
+  0% {
+    opacity: 0;
+    transform: rotate(-6deg) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(-3deg) scale(1);
+  }
+}
+
+@keyframes fadeRotateRight {
+  0% {
+    opacity: 0;
+    transform: rotate(6deg) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(3deg) scale(1);
+  }
+}
